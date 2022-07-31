@@ -1,44 +1,46 @@
-import styled, { css } from "styled-components";
-import { ColorPrimary, Grey0, Grey1, Grey2 } from "../../Styles/global";
+import styled, {css} from 'styled-components'
 
 export const Container = styled.div`
-  label {
-    font-size: 9.772px;
-    color: ${Grey0};
-    margin: 22.3336px 0px;
-  }
-`;
+    text-align: left;
+    width: 90%;
+    div{
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+        span{
+            color: var(--red);
+        }
+`
+
 export const InputContainer = styled.div`
-  display: flex;
-  padding: 0px 13.0293px;
-  background: ${Grey2};
-  border: 0.9772px solid ${Grey2};
-  box-sizing: border-box;
-  border-radius: 3.20867px;
-  margin: 15px 0px;
-  height: 48px;
-  transition: 0.5s;
-  :hover {
-    border-color: ${Grey1};
-  }
-  ${(props) =>
-    props.isErrored &&
-    css`
-      border-color: ${ColorPrimary};
+    background: var(--mediumgrey);
+    border-radius: 4px;
+    color: var(--vanilla);
+    padding: 0.9rem;
+    width: 100%;
+    display: flex;
+    transition: 0.5s;
+    border: 1px solid var(--mediumgrey);
+    ${props => props.isErrored && css`
+        border-color: var(--red);
+        svg{
+            color: var(--red);
+        }
     `}
-  input {
-    background: transparent;
-    align-items: center;
-    flex: 1;
-    border: none;
-    color: ${Grey0};
-    font-size: 16.2426px;
-    line-height: 26px;
-    :-webkit-autofill {
-      transition: all 0s 50000s;
+    input{
+        background-color: transparent;
+        align-items: center;
+        width: 190px;
+        flex: 1;
+        border: 0;
+        color: var(--vanilla);
+        &::placeholder{
+            color: var(--softgrey);
+            font-size: 16px;
+        }
     }
-    &::placeholder {
-      color: ${Grey0};
+    svg{
+        margin-right: 16px;
+        margin-bottom: 1px;
     }
-  }
-`;
+`

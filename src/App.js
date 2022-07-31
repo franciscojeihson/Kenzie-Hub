@@ -1,12 +1,13 @@
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Routes } from "./routes";
+import GlobalStyle from './styles/global'
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from 'react-toastify';
 
-import { Routes } from "./Routes";
-import GlobalStyle from "./Styles/global";
+function App() {
 
-export const App = () => {
   return (
-    <>
+    <div>
+      <GlobalStyle />
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -18,9 +19,9 @@ export const App = () => {
         draggable
         pauseOnHover
       />
-      <ToastContainer />
-      <GlobalStyle />
       <Routes />
-    </>
+    </div>
   );
-};
+}
+
+export default App;

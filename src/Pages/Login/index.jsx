@@ -1,104 +1,87 @@
-import { useHistory } from "react-router-dom";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { toast } from "react-toastify";
-import { Redirect } from "react-router-dom";
+import {Container} from './styles'
+import {HiOutlineMail} from 'react-icons/hi'
+import {RiLockPasswordLine} from 'react-icons/ri'
+import Logo from '../../assets/Logo.png'
+import Input from '../../components/Input'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
+import Button from '../../components/Button'
+import api from '../../services/api'
+import { useHistory } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { Redirect } from 'react-router-dom'
 
-import { Logo } from "../../Components/Logo";
-import { Button } from "../../Components/Button";
-import {
-  ColorPrimary,
-  ColorPrimaryFocus,
-  Grey1,
-  Grey2,
-} from "../../Styles/global";
-import { Container } from "./styles";
-import { Input } from "../../Components/Input";
-import api from "../../Components/Api/api";
 
-export const Login = ({ auth, setAuth }) => {
-  const history = useHistory();
+const Login = ({setAuthenticated, authenticated}) => {
 
-  const formSchema = yup.object().shape({
-    email: yup.string().email("E-mail inválido").required("E-mail obrigatório"),
-    password: yup.string().required("Senha inválida"),
-  });
+    const history = useHistory()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(formSchema),
-  });
+    const handleNavigation = (path) => {
+        return history.push(path)
+    }
 
-  const onSubmitFunction = (userInfo) => {
-    api
-      .post("/sessions", userInfo)
-      .then((response) => {
-        const { token } = response.data;
-        const { user } = response.data;
+    const schema = yup.object().shape({
+        email: yup.string().email("Email inválido!").required("Campo obrigatório!"),
+        password: yup.string().min(6, "A senha precisa ter no mínimo 6 caracteres").required("Campo obrigatório!")
+    })
 
-        localStorage.setItem("@Kenziehub:token", JSON.stringify(token));
-        localStorage.setItem("@Kenziehub:user", JSON.stringify(user));
+    const {
+        register, 
+        handleSubmit, 
+        formState: {errors},
+    } = useForm({
+        resolver: yupResolver(schema)
+    })
 
-        setAuth(true);
+    const onSubmitFunction = (data) => {
+        api
+        .post('/sessions', data)
+        .then(response => {
+            const {token, user} = response.data;
 
-        return history.push("/profile");
-      })
-      .catch((err) =>
-        toast.error("Email ou senha inválidos. Tente novamente.")
-      );
-  };
+            localStorage.setItem('@kenzieHub:token', JSON.stringify(token));
+            localStorage.setItem('@kenzieHub:user', JSON.stringify(user));
 
-  if (auth) {
-    return <Redirect to="/profile" />;
-  }
+            setAuthenticated(true)
 
-  return (
-    <Container>
-      <header>
-        <Logo />
-      </header>
-      <main>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit(onSubmitFunction)}>
-          <Input
-            name="email"
-            register={register}
-            label="Email"
-            placeholder="email@exemplo.com"
-            error={errors.email?.message}
-          />
+            history.push('/dashboard')
+        })
+        .catch((err) => toast.error("Email ou senha inválidos!"))
+    };
 
-          <Input
-            borderColor={Grey2}
-            name="password"
-            register={register}
-            label="Senha"
-            placeholder="Digite sua senha"
-            type="password"
-            error={errors.password?.message}
-          />
-          <Button
-            backgroundColor={ColorPrimary}
-            onHover={ColorPrimaryFocus}
-            type="submit"
-          >
-            Entrar
-          </Button>
-          <p>Ainda não possui uma conta?</p>
-          <Button
-            type="button"
-            backgroundColor={Grey1}
-            onHover={Grey2}
-            onClick={() => history.push("/register")}
-          >
-            Cadastre-se
-          </Button>
-        </form>
-      </main>
-    </Container>
-  );
-};
+    if(authenticated){
+        return <Redirect to="/dashboard" />
+    }
+
+    return(
+        <Container>
+            <img src={Logo} alt="logo-kenzie" />
+            <form onSubmit={handleSubmit(onSubmitFunction)}>
+                <h1>Login</h1>
+                <Input 
+                    register={register}
+                    name="email"
+                    icon={HiOutlineMail}
+                    label="Email"
+                    placeholder='Digite seu email'
+                    type="email"
+                    error={errors.email?.message}
+                />
+                <Input 
+                    register={register}
+                    name="password"
+                    icon={RiLockPasswordLine}
+                    label="Senha"
+                    placeholder='Digite sua senha'
+                    type="password"
+                    error={errors.password?.message} 
+                />
+                <Button type="submit" color="var(--white)" backgroundColor="var(--pink)">Entrar</Button>
+                <p>Ainda não possui uma conta?</p>
+                <Button onClick={() => handleNavigation("/register")} color="var(--vanilla)" backgroundColor="var(--softgrey)">Cadastre-se</Button>
+            </form>
+        </Container>
+    )
+}
+export default Login

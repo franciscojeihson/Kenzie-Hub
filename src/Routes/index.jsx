@@ -1,32 +1,42 @@
-import { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
-import { Profile } from "../Pages/Profile";
-import { Login } from "../Pages/Login";
-import { Register } from "../Pages/Register";
+import {Switch, Route} from 'react-router-dom'
+import Register from '../pages/Register'
+import Login from '../pages/Login'
+import { useEffect, useState } from 'react'
+import Dashboard from '../pages/Dashboard'
+import Home from '../pages/Home'
 
 export const Routes = () => {
-  const [name, setName] = useState("");
-  const [auth, setAuth] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("@KenzieHub:token");
+    const [authenticated, setAuthenticated] = useState(false)
 
-    if (token) {
-      setAuth(true);
-    }
-  }, []);
+    useEffect(() => {
+        const token = JSON.parse(localStorage.getItem("kenzieHub:token"))
 
-  return (
-    <Switch>
-      <Route exact path="/">
-        <Login name={name} setName={setName} auth={auth} setAuth={setAuth} />
-      </Route>
-      <Route path="/register">
-        <Register />
-      </Route>
-      <Route path="/profile/:user">
-        <Profile setName={setName} auth={auth} setAuth={setAuth} />
-      </Route>
-    </Switch>
-  );
-};
+        console.log('aqui');
+        if(token){
+            return setAuthenticated(true)
+        }
+    }, [authenticated])
+
+    return(
+        <Switch>
+            <Route exact path="/">
+                <Home />
+            </Route>
+            <Route exact path="/login">
+                <Login 
+                    authenticated={authenticated} 
+                    setAuthenticated={setAuthenticated} 
+                />
+            </Route>
+            <Route path="/register">
+                <Register 
+                    authenticated={authenticated} 
+                />
+            </Route>
+            <Route path="/dashboard">
+                <Dashboard authenticated={authenticated} setAuthenticated={setAuthenticated} />
+            </Route>
+        </Switch>
+    )
+}

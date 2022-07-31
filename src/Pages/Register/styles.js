@@ -1,43 +1,58 @@
-import styled from "styled-components";
-import { ColorPrimary, Grey0, Grey1, Grey3 } from "../../Styles/global";
+import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  nav {
-    width: 300px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-  form {
+    /* height: 100vh; */
+    /* width: 100vw; */
+    max-width: 100vw;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
-    padding: 33.5803px 17.5897px;
-    width: 295.83px;
-    background: ${Grey3};
-    box-shadow: 0px 3.19812px 31.9812px -7.99531px rgba(0, 0, 0, 0.25);
-    border-radius: 3.19812px;
-    span {
-      position: relative;
-      top: -10px;
-      font-size: 10px;
-      color: ${ColorPrimary};
+    form{
+        background-color: var(--darkgrey);
+        /* max-height: 90vh; */
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        h1{
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        p{
+            font-size: 12px;
+            color: var(--softgrey);
+            margin-bottom: 20px;
+        }
+        
+        label{
+            font-size: 12px;
+            margin-bottom: 10px;
+            align-self: flex-start;
+            margin-left: 20px;
+        }
+        select{
+            background: var(--mediumgrey);
+            border-radius: 4px;
+            color: var(--vanilla);
+            padding: 0.9rem;
+            width: 90%;
+            display: flex;
+            border: 1px solid var(--mediumgrey);
+            margin-bottom: 10px;
+        }
     }
-    h2 {
-      color: ${Grey0};
-      font-size: 14.3916px;
-      line-height: 22px;
-      margin: 17.5897px 0px;
+    @media screen and (min-width: 768px){
+        form{
+            width: 350px;
+            margin-bottom: 30px;
+        }
     }
-    h3 {
-      color: ${Grey1};
-      font-weight: 400;
-      font-size: 9.59437px;
-      line-height: 18px;
-      margin: 0 0 17.5897px 0;
-    }
-  }
-`;
+`
